@@ -1,0 +1,43 @@
+---
+id: non-determinism-error
+title: Troubleshoot Nondeterminism Errors
+sidebar_label: Troubleshoot Nondeterminism Errors
+description: Troubleshooting Nondeterminism Errors
+toc_max_heading_level: 4
+keywords:
+  - error
+  - troubleshooting
+tags:
+  - Errors
+  - Failures
+---
+
+Your logs are showing non-determinism errors, and you know you need to fix them, but how do you do that?
+This guide will help you troubleshoot non-determinism errors that are happening in your production system.
+
+## The toolkit
+
+- Workflow History Replayer/Tester
+- Static checkers such as the [Workflow Check Tool](https://github.com/temporalio/sdk-go/tree/master/contrib/tools/workflowcheck)
+- Workflow Versioning
+- Deploying new code without using Workflow versioning
+- Workflow Cancellation
+- Workflow Resetting
+- Workflow Terminating
+
+> Keep in mind that however you choose to fix the production NDEs, you will likely need to deploy new code.
+
+You can use a combination of these tools to fix your NDEs.
+
+## Steps
+
+- Figure out the impact.
+  - Is this impacting your business?
+  - How many Workflows are experiencing the issue? To find the IDs of stuck Workflows, check your Worker and server logs. If you're on Cloud, you don't have access to the server logs; Temporal Support can help with this.
+- When looking at your Workflow histories, figure out where the issues are happening.
+- Decide what you want the code to do on fresh executions.
+- Determine what your use-case wants to do with the currently stuck Workflows.
+  - For example, can you just Cancel/Terminate them?
+- If you can't just Terminate the stuck Workflows, you may need to look into Workflow versioning.
+- You may be able to just deploy the fixed code without versioning.
+- You may be able to deploy fresh code + reset back to the point before the bad history.
